@@ -1,6 +1,7 @@
+import axios from "axios"
 const Card = (article) => {
   // TASK 5
-  // ---------------------
+  // --------------------
   // Implement this function, which should return the markup you see below.
   // It takes as its only argument an "article" object with `headline`, `authorPhoto` and `authorName` properties.
   // The tags used, the hierarchy of elements and their attributes must match the provided markup exactly!
@@ -17,7 +18,33 @@ const Card = (article) => {
   //   </div>
   // </div>
   //
+
+  const cardWrapper = document.createElement('div')
+  const h1Div = document.createElement('div')
+  const author = document.createElement('div')
+  const imgWrapper = document.createElement('div')
+  const authorPhoto = document.createElement('img')
+  const authorName = document.createElement('span')
+
+  cardWrapper.classList.add('card')
+  h1Div.classList.add('headline')
+  author.classList.add('author')
+  imgWrapper.classList.add('img-container')
+
+  cardWrapper.appendChild(h1Div)
+  cardWrapper.appendChild(author)
+  author.appendChild(imgWrapper)
+  author.appendChild(authorName)
+  imgWrapper.appendChild(authorPhoto)
+
+  // h1Div.textContent = article.headline
+  // authorPhoto.src = article.authorPhoto
+  // authorName.textContent = article.authorName
+
+  return cardWrapper
 }
+
+Card()
 
 const cardAppender = (selector) => {
   // TASK 6
@@ -28,6 +55,16 @@ const cardAppender = (selector) => {
   // Create a card from each and every article object in the response, using the Card component.
   // Append each card to the element in the DOM that matches the selector passed to the function.
   //
+  const URL = 'http://localhost:5001/api/articles'
+  axios.get(URL)
+  .then(res => {
+    console.log(res.data.articles.bootstrap[0].headline);
+    document.querySelector(selector).appendChild(Card(res.data.articles))
+    
+  })
+  .catch(err => {
+    console.error(err)
+  })
 }
 
 export { Card, cardAppender }
