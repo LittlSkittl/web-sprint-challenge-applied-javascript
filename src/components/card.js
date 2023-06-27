@@ -37,14 +37,15 @@ const Card = (article) => {
   author.appendChild(authorName)
   imgWrapper.appendChild(authorPhoto)
 
-  // h1Div.textContent = article.headline
-  // authorPhoto.src = article.authorPhoto
-  // authorName.textContent = article.authorName
+  console.log(article);
+
+  h1Div.textContent = article.headline
+  authorPhoto.src = article.authorPhoto
+  authorName.textContent = article.authorName
 
   return cardWrapper
 }
 
-Card()
 
 const cardAppender = (selector) => {
   // TASK 6
@@ -58,9 +59,14 @@ const cardAppender = (selector) => {
   const URL = 'http://localhost:5001/api/articles'
   axios.get(URL)
   .then(res => {
-    console.log(res.data.articles.bootstrap[0].headline);
-    document.querySelector(selector).appendChild(Card(res.data.articles))
-    
+    // console.log(res.data);
+    for(let key in res.data.articles) {
+      document.querySelector(selector).appendChild(Card(key))
+      console.log(key);
+      for (let art of res.data.articles[key]) {
+        document.querySelector(selector).appendChild(Card(art))
+      }
+    }
   })
   .catch(err => {
     console.error(err)
